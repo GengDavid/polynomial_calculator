@@ -111,6 +111,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Poly_Calcltor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calc_List.h" />
