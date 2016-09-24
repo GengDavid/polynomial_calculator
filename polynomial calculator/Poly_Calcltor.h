@@ -6,6 +6,9 @@ using std::stack;
 using std::cout;
 using std::vector;
 using std::string;
+using std::endl;
+
+inline void print(Poly);
 
 class Poly_Calcltor {
 public:
@@ -24,8 +27,10 @@ public:
   void update(string s1, string s2) {
     a = buildPl(s1);
     poly_sort(a, a->size);
+    a = filter(a);
     b = buildPl(s2);
     poly_sort(b, b->size);
+    b = filter(b);
   }
 
   //The function add 2 polyn.s up.
@@ -74,11 +79,18 @@ public:
     freePoly(&b);
   }
 
-
+  void printPoly() {
+    print(a);
+    print(b);
+  }
 private:
   Poly a;
   Poly b;
   //attach a node to exist polyn.
+
+  void deleteNode(Poly *pre, Poly *p);
+
+  Poly filter(Poly p);
 
   void attach(double c, double e, Poly * p);
 
@@ -89,8 +101,6 @@ private:
   void createNode(string s, Poly * p);
 
   Poly buildPl(string s);
-
-  Poly buildPl(int size, double * c, double * e);
 
   void freePoly(Poly * p);
 
@@ -114,10 +124,23 @@ private:
 //the first num. n is the total items number
 inline void print(Poly p) {
   int f = 1;
+  Poly front = p;
   p = p->next;
-  while (p->next) {
+  if (p == nullptr) {
+    cout << "The result contain " << 1 << " item" << std::endl;
+    cout << "The result is: ";
+    cout << 0 << " (The polinomail only has a const item zero)" << endl;
+    return;
+  }
+  cout << "The result contain " << front->size << " items" << std::endl;
+  cout << "The result is: ";
+  while (p && p->next) {
     if (f) {
       f = 0;
+      if (p->c == 0) {
+        p = p->next;
+        continue;
+      }
     }
     else if (!f && p->c > 0)cout << "+";
     else if (p->c == 0) {
@@ -143,13 +166,14 @@ inline void print(Poly p) {
   if ((p->c != 1 && p->c != -1) ||
     (p->c == 1 && p->e == 0) ||
     (p->c == -1 && p->e == 0))cout << p->c;
-  if (p->c == -1)cout << "-";
+  if (p->c == -1 && p->e)cout << "-";
   if (p->e) {
     if (p->e != 1) {
       cout << "x^" << p->e << std::endl;
     }
     else cout << 'x' << std::endl;
   }
+  cout << endl;
 }
 
 
